@@ -6,9 +6,26 @@ require_once 'libs/phpmailer/PHPMailerAutoload.php';
 
 $errors = array();
 
-print_r($_POST);
 if(isset($_POST['name'], $_POST['email'], $_POST['message'])){
-  echo 'All set';
+  $fields = [
+    'name' => $_POST['name'],
+    'email' => $_POST['email'],
+    'message' => $_POST['message']
+  ];
+
+  foreach($fields as $field => $data){
+    if(empty($data)){
+      $errors[] = 'The ' . $field . ' field is required.';
+    }
+  }
+
+
+} else {
+  $errors[] = 'Somethign went wrong';
 }
 
+$_SESSION['errors'] = $errors;
+$_SESSION['fields'] = $fields;
+
+header('Location: index.php');
 ?>
